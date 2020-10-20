@@ -1,0 +1,19 @@
+<ul>
+  <ng-template #repeatBlock let-list>
+    <li *ngFor="let item of list">
+      <span *ngIf="isFolder(item)"> 
+        <span class="btn" (click)="showChild(item)" *ngIf="!item.children.visible; else closeChilde">+</span>
+        <ng-template #closeChilde>
+          <span class="btn" (click)="showChild(item)">-</span>
+        </ng-template>
+      </span>
+      {{item.name}}<strong *ngIf="item.countfile">({{item.countfile}})</strong>
+      <ul *ngIf="item.children">
+        <ng-container *ngIf="item.children.visible">
+          <ng-container *ngTemplateOutlet="repeatBlock; context:{ $implicit: item.children }"></ng-container>
+        </ng-container>
+      </ul>
+    </li>
+  </ng-template>
+  <ng-container *ngTemplateOutlet="repeatBlock; context:{ $implicit: list }"></ng-container>
+</ul>
