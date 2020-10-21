@@ -1,7 +1,7 @@
 <ul>
   <ng-template #repeatBlock let-list>
     <li *ngFor="let item of list">
-      <span *ngIf="isFolder(item)"> 
+      <span *ngIf="isFolder(item) && item.children.length"> 
         <span class="btn" (click)="showChild(item)" *ngIf="!item.children.visible; else closeChilde">+</span>
         <ng-template #closeChilde>
           <span class="btn" (click)="showChild(item)">-</span>

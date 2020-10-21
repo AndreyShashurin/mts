@@ -1,5 +1,5 @@
-import { identifierName } from '@angular/compiler';
-import { Component } from '@angular/core';
+import { Component, ɵConsole } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ReadyService } from './ready.service';
 
 @Component({
@@ -10,12 +10,12 @@ import { ReadyService } from './ready.service';
 export class AppComponent {
   title = 'mts';
   list: any = []
-  visible: boolean = false;
+  subscription: Subscription;
   
   constructor(
     public json: ReadyService
   ) {
-    this.json.getJSON().subscribe(data => this.list=data.tree, error => console.error(error));
+    this.subscription = this.json.getJSON().subscribe(data => this.list=data.tree, error => console.error(error));
   }
 
   isFolder(item): boolean {
@@ -30,7 +30,10 @@ export class AppComponent {
   }
   
   showChild(item): void {
-    this.visible = !this.visible 
     item.children['visible'] = !item.children['visible']
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 }
